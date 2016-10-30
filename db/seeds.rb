@@ -8,6 +8,7 @@
 Region.destroy_all
 
 
+
 # test41=Region.create(zip:"20009",state:"DC",city:"Washington",rent:"2750")
 # test42=Region.create(zip:"20002",state:"DC",city:"Washington",rent:"2599")
 # test164=Region.create(zip:"20011",state:"DC",city:"Washington",rent:"2526")
@@ -29,8 +30,6 @@ Region.destroy_all
 # test7299=Region.create(zip:"20012",state:"DC",city:"Washington",rent:"2736")
 # test9551=Region.create(zip:"20036",state:"DC",city:"Washington",rent:"2262")
 # test12602=Region.create(zip:"20004",state:"DC",city:"Washington",rent:"2403")
-
-
 test1=Region.create(zip:"10025",state:"NY",city:"New York",rent:"3612")
 test2=Region.create(zip:"60657",state:"IL",city:"Chicago",rent:"1958")
 test3=Region.create(zip:"10023",state:"NY",city:"New York",rent:"3966")
