@@ -14,3 +14,45 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+var map;
+var regions;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 5,
+    minZoom: 5,
+    center: {lat: 38.8997633, lng: -96.5303113},
+    mapTypeId: 'terrain'
+  });
+
+  $.ajax({
+    url: "http://localhost:3000/regions",
+    type: "GET",
+    dataType: "json"
+  }).done((result) => {
+    regions = result
+    eqfeed_callback(regions)
+  });
+}
+
+
+function eqfeed_callback(regions) {
+  var heatmapData = [];
+  for (var i = 0; i < regions.length; i++) {
+    var zip = regions[i].zip;
+    $.ajax({
+      url: `https://maps.googleapis.com/maps/api/geocode/json?address=${zip}&key=AIzaSyBNYErfLDCAvSnyYNvLIVMQWo45_L6zE1E`,
+      type: "GET",
+      dataType: "json"
+    }).done((result) => {
+      var coords = result.results[0].geometry.location
+      var latLng = new google.maps.LatLng(coords.lat, coords.lng);
+      heatmapData.push(latLng);
+    })
+  }
+  var heatmap = new google.maps.visualization.HeatmapLayer({
+    data: heatmapData,
+    dissipating: false,
+    map: map
+  });
+}
