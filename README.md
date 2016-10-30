@@ -23,7 +23,7 @@ Things you may want to cover:
 
 * ...
 <snippet>
-  <content><![CDATA[
+<content>
 # ${1:Project Name}
 "Project Name" is an app that utilizes GoogleMaps API and data from Zillows to display Rent Price specifically scoped to Zipcodes in the form of a Heat-Map.
 
@@ -51,6 +51,6 @@ TODO: Write credits
 
 ## License
 TODO: Write license
-]]></content>
-  <tabTrigger>readme</tabTrigger>
+</content>
+
 </snippet>
