@@ -19,10 +19,10 @@ var map;
 var regions;
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 5,
+    zoom: 12,
     minZoom: 5,
-    center: {lat: 38.8997633, lng: -96.5303113},
-    mapTypeId: 'terrain'
+    center: {lat: 38.9072, lng: -77.0369},
+    mapTypeId: 'roadmap'
   });
 
   $.ajax({
@@ -31,6 +31,7 @@ function initMap() {
     dataType: "json"
   }).done((result) => {
     regions = result
+    console.log(regions)
     eqfeed_callback(regions)
   });
 }
@@ -41,18 +42,30 @@ function eqfeed_callback(regions) {
   for (var i = 0; i < regions.length; i++) {
     var zip = regions[i].zip;
     $.ajax({
-      url: `https://maps.googleapis.com/maps/api/geocode/json?address=${zip}&key=AIzaSyBNYErfLDCAvSnyYNvLIVMQWo45_L6zE1E`,
+      url: `https://maps.googleapis.com/maps/api/geocode/json?address=${zip}&key=AIzaSyAQ4GK5BgqFMN8Vc5srUckmB6zf3eZlL0g`,
       type: "GET",
       dataType: "json"
     }).done((result) => {
       var coords = result.results[0].geometry.location
       var latLng = new google.maps.LatLng(coords.lat, coords.lng);
       heatmapData.push(latLng);
+    }).fail((result) => {
+      console.log(result)
     })
   }
   var heatmap = new google.maps.visualization.HeatmapLayer({
     data: heatmapData,
-    dissipating: false,
+    dissipating: true,
+    radius: (map.zoom * 10),
     map: map
   });
+  google.maps.event.addListener(map, 'zoom_changed', function() {
+    if (map.zoom < 9){
+      heatmap.radius = (map.zoom * 2)
+    } else {
+      heatmap.radius = (map.zoom * 7)
+    }
+    console.log(`zoom is ${map.zoom}`)
+    console.log(`radius is ${heatmap.radius}`)
+  })
 }
