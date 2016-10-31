@@ -19,10 +19,11 @@ var map;
 var regions;
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 12,
+    zoom: 8,
     minZoom: 5,
     center: {lat: 38.9072, lng: -77.0369},
-    mapTypeId: 'roadmap'
+    mapTypeId: 'roadmap',
+    scaleControl: true
   });
 
   $.ajax({
@@ -47,16 +48,18 @@ function eqfeed_callback(regions) {
   var heatmap = new google.maps.visualization.HeatmapLayer({
     data: heatmapData,
     dissipating: true,
-    radius: (map.zoom * 30),
+    radius: 0.03 * ((2)**(map.zoom)),
+    maxIntensity: 3600,
+    opacity: 0.6,
     map: map
   });
-  // google.maps.event.addListener(map, 'zoom_changed', function() {
-  //   if (map.zoom < 9){
-  //     heatmap.radius = (map.zoom * 2)
-  //   } else {
-  //     heatmap.radius = (map.zoom * 7)
-  //   }
-  //   console.log(`zoom is ${map.zoom}`)
-  //   console.log(`radius is ${heatmap.radius}`)
-  // })
+  google.maps.event.addListener(map, 'zoom_changed', function() {
+      heatmap.radius = 0.03 * ((2)**(map.zoom));
+      if (map.zoom > 12){
+        heatmap.opacity = 0.4
+      } else {
+        heatmap.opacity = 0.6
+      }
+      heatmap.setMap(map)
+  })
 }
