@@ -25,41 +25,37 @@ function initMap() {
     mapTypeId: 'roadmap',
     scaleControl: true
   });
-
-  $.ajax({
-    url: "http://localhost:3000/regions",
-    type: "GET",
-    dataType: "json"
-  }).done((result) => {
-    regions = result
-    console.log(regions)
-    eqfeed_callback(regions)
-  });
-}
-
-function eqfeed_callback(regions) {
-  var heatmapData = [];
-  for (var i = 0; i < regions.length; i++) {
-    var latLng = new google.maps.LatLng(regions[i].lat, regions[i].long);
-    var rentMagnitude = (regions[i].rent)
-    heatmapData.push({location: latLng, weight: rentMagnitude});
-  }
-
-  var heatmap = new google.maps.visualization.HeatmapLayer({
-    data: heatmapData,
-    dissipating: true,
-    radius: 0.03 * ((2)**(map.zoom)),
-    maxIntensity: 3600,
-    opacity: 0.6,
-    map: map
-  });
-  google.maps.event.addListener(map, 'zoom_changed', function() {
-      heatmap.radius = 0.03 * ((2)**(map.zoom));
-      if (map.zoom > 12){
-        heatmap.opacity = 0.4
-      } else {
-        heatmap.opacity = 0.6
+  var layer = new google.maps.FusionTablesLayer({
+    query: {
+      select: 'geometry',
+      from: '1oUHvuUMkzN23i9l59qfpJfUhltfH5cpPdNasx6Al'
+    },
+    styles: [{
+      where: 'Rent > 1842',
+      polygonOptions: {
+        fillColor: '#FF0000'
       }
-      heatmap.setMap(map)
-  })
+    }, {
+      where: 'Rent > 1411',
+      polygonOptions: {
+        fillColor: '#FFA500'
+      }
+    }, {
+      where: 'Rent > 1193',
+      polygonOptions: {
+        fillColor: '#FFFF00'
+      }
+    }, {
+      where: 'Rent > 988',
+      polygonOptions: {
+        fillColor: '#32CD32'
+      }
+    }, {
+      where: 'Rent > 495',
+      polygonOptions: {
+        fillColor: '#00FF00'
+      }
+    }]
+  });
+  layer.setMap(map);
 }
