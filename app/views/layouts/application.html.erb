@@ -6,10 +6,13 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNYErfLDCAvSnyYNvLIVMQWo45_L6zE1E&libraries=visualization&callback=initMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQ4GK5BgqFMN8Vc5srUckmB6zf3eZlL0g&libraries=visualization,places&callback=initMap" async defer></script>
+
   </head>
 
   <body>
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box" style=" display: block;">
+
     <%= yield %>
 
 
